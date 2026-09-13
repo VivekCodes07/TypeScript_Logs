@@ -1,0 +1,24 @@
+{
+  "name": "typescript-mastery",
+  "version": "1.0.0",
+  "description": "A structured journey to learn **TypeScript from fundamentals to advanced concepts**, with a focus on understanding the language deeply and using it in real-world JavaScript and Full Stack development.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VivekCodes07/TypeScript_Logs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/VivekCodes07/TypeScript_Logs/issues"
+  },
+  "homepage": "https://github.com/VivekCodes07/TypeScript_Logs#readme",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}
