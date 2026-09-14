@@ -4,7 +4,9 @@
   "description": "A structured journey to learn **TypeScript from fundamentals to advanced concepts**, with a focus on understanding the language deeply and using it in real-world JavaScript and Full Stack development.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx",
+    "build": "tsc",
+    "build:watch": "tsc --watch"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   },
   "homepage": "https://github.com/VivekCodes07/TypeScript_Logs#readme",
   "devDependencies": {
+    "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   }
 }
