@@ -29,7 +29,28 @@ The goal is to understand **how TypeScript adds type safety to functions.**
 
 ---
 
-# 2. The Main Problem
+# 2. What Am I Going to Study?
+
+In this lesson, I am going to study:
+
+* How to type function parameters
+* How to specify function return types
+* How TypeScript infers return types
+* Optional parameters using `?`
+* Default parameters
+* The difference between optional and default parameters
+* Function types
+* Arrow functions with TypeScript
+* Rest parameters
+* Functions that accept typed objects
+* Using `void` with functions
+* How typed functions will be useful in backend development
+
+By the end of this lesson, I should be comfortable reading and writing TypeScript functions without blindly memorizing the syntax.
+
+---
+
+# 3. The Main Problem
 
 In JavaScript, I can write:
 
@@ -71,7 +92,7 @@ This is the main idea of typed functions.
 
 ---
 
-# 3. Typing Function Parameters
+# 4. Typing Function Parameters
 
 The basic syntax is:
 
@@ -110,7 +131,7 @@ Now both parameters must be numbers.
 
 ---
 
-# 4. Typing the Return Value
+# 5. Typing the Return Value
 
 I can also tell TypeScript what the function should return.
 
@@ -144,7 +165,7 @@ The function must return a string.
 
 ---
 
-# 5. Do I Always Need to Write the Return Type?
+# 6. Do I Always Need to Write the Return Type?
 
 No.
 
@@ -166,7 +187,7 @@ number
 
 because `a + b` produces a number.
 
-So this:
+So these both work:
 
 ```ts
 function add(a: number, b: number): number {
@@ -174,7 +195,7 @@ function add(a: number, b: number): number {
 }
 ```
 
-and this:
+and:
 
 ```ts
 function add(a: number, b: number) {
@@ -182,13 +203,11 @@ function add(a: number, b: number) {
 }
 ```
 
-both work.
-
 For learning and important functions, explicitly writing the return type can make the function easier for me to understand.
 
 ---
 
-# 6. What Happens If I Return the Wrong Type?
+# 7. What Happens If I Return the Wrong Type?
 
 Suppose I say:
 
@@ -220,7 +239,7 @@ This is one of the main benefits of TypeScript functions.
 
 ---
 
-# 7. Optional Parameters
+# 8. Optional Parameters
 
 Sometimes a parameter does not have to be provided.
 
@@ -234,7 +253,7 @@ function greet(name: string, age?: number) {
 
 Here:
 
-```ts
+```text
 name → required
 age → optional
 ```
@@ -277,7 +296,7 @@ function greet(name: string, age?: number) {
 
 ---
 
-# 8. Default Parameters
+# 9. Default Parameters
 
 Sometimes I want a parameter to have a default value.
 
@@ -293,7 +312,7 @@ Now I can call:
 greet("Vivek");
 ```
 
-and TypeScript/JavaScript uses:
+and the default value is used:
 
 ```text
 age = 20
@@ -323,7 +342,7 @@ Default parameter
 
 ---
 
-# 9. Optional vs Default Parameters
+# 10. Optional vs Default Parameters
 
 I should not confuse these two.
 
@@ -363,7 +382,7 @@ Mental model:
 
 ---
 
-# 10. Function Types
+# 11. Function Types
 
 So far I have been typing the parameters and return value of a function.
 
@@ -413,7 +432,7 @@ This describes the **shape of the function**.
 
 ---
 
-# 11. Arrow Functions in TypeScript
+# 12. Arrow Functions in TypeScript
 
 Arrow functions work almost the same way as in JavaScript.
 
@@ -447,7 +466,7 @@ So the basic structure is:
 
 ---
 
-# 12. Rest Parameters
+# 13. Rest Parameters
 
 Sometimes I don't know how many values will be passed to a function.
 
@@ -497,7 +516,7 @@ numbers is an array of numbers
 
 ---
 
-# 13. Functions Can Accept Objects Too
+# 14. Functions Can Accept Objects Too
 
 Since I have already learned object types, I can use them with functions.
 
@@ -533,7 +552,7 @@ This is very similar to what I will do later in backend code when functions rece
 
 ---
 
-# 14. Functions With No Useful Return Value
+# 15. Functions With No Useful Return Value
 
 Sometimes a function performs an action but does not return a useful value.
 
@@ -559,7 +578,7 @@ void
 
 ---
 
-# 15. Function Type vs Function Return Type
+# 16. Function Type vs Function Return Type
 
 These can look confusing at first.
 
@@ -604,16 +623,16 @@ parameters → return type
 Mental model:
 
 ```text
-function declaration
-→ tells me how the function works
+Return type
+→ tells me what comes out
 
-function type
-→ describes what kind of function can be stored here
+Function type
+→ describes the complete function shape
 ```
 
 ---
 
-# 16. Everything Together
+# 17. Everything Together
 
 Now I can combine the concepts:
 
@@ -654,7 +673,7 @@ This is the kind of function structure I will see frequently in real application
 
 ---
 
-# 17. How This Fits My Backend Goal
+# 18. How This Fits My Backend Goal
 
 Functions are everywhere in backend development.
 
@@ -702,7 +721,7 @@ I will be writing and passing functions everywhere.
 
 ---
 
-# 18. Common Mistakes
+# 19. Common Mistakes
 
 ### Mistake 1: Forgetting parameter types
 
@@ -760,7 +779,7 @@ The goal is useful type safety, not writing types everywhere just for the sake o
 
 ---
 
-# 19. My Mental Model
+# 20. My Mental Model
 
 I want to remember functions like this:
 
@@ -796,7 +815,7 @@ I can receive multiple values as an array.
 
 ---
 
-# 20. Final Flow
+# 21. Final Flow
 
 When I see a TypeScript function, I should be able to read it from left to right:
 
@@ -840,7 +859,7 @@ That is the main idea of typed functions.
 
 ---
 
-# 21. Self-Test
+# 22. Self-Test
 
 Before moving to the next lesson, I should be able to answer:
 
@@ -860,7 +879,7 @@ If I can explain these without memorizing the syntax blindly, I understand the l
 
 ---
 
-# 22. Final Recap
+# 23. Final Recap
 
 The main things I learned:
 
@@ -907,3 +926,29 @@ Safer Backend Functions
 I don't need to memorize every function-related feature right now.
 
 I need to be comfortable reading and writing typed functions because functions will be one of the most common things I use when I move into Node.js and Express.
+
+---
+
+# 24. What I Should Be Able to Do After This Lesson
+
+After completing this lesson, I should be able to:
+
+```text
+Write a typed function
+        ↓
+Type its parameters
+        ↓
+Type or infer its return value
+        ↓
+Use optional/default parameters
+        ↓
+Write typed arrow functions
+        ↓
+Describe a function using a function type
+        ↓
+Use typed rest parameters
+        ↓
+Pass typed objects into functions
+```
+
+If I can do these things comfortably, I have learned the amount of function typing I currently need before moving deeper into TypeScript and eventually Node.js + Express.

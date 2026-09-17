@@ -23,7 +23,7 @@ console.log(greet("Vivek"));
 
 // Optional Parameter
 // ? means I don't have to provide this value.
-
+ 
 function showUser(name: string, age?: number): void {
     if (age !== undefined) {
         console.log(name, age);

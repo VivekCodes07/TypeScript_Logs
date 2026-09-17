@@ -6,7 +6,9 @@ So far, I have mainly worked with individual values:
 
 ```ts
 let username: string = "Vivek";
+
 let age: number = 20;
+
 let isLoggedIn: boolean = true;
 ```
 
@@ -58,7 +60,51 @@ The goal of this lesson is to understand **what problem each one solves and when
 
 ---
 
-# 2. First, How Are Arrays Different in TypeScript?
+# 2. What Am I Going to Study?
+
+In this lesson, I am going to study:
+
+* How arrays work with TypeScript
+* Typed arrays such as `string[]`, `number[]`, and `boolean[]`
+* The `Array<T>` syntax
+* How TypeScript infers array types
+* Arrays containing multiple types using union types
+* Why a union array is different from a tuple
+* What tuples are
+* How tuple positions have specific types
+* Accessing values from tuples
+* Tuple destructuring
+* When I should use a tuple instead of an array
+* What enums are
+* Numeric enums
+* String enums
+* Using enums as types
+* The difference between Arrays, Tuples, and Enums
+* When each one makes sense in backend development
+
+By the end of this lesson, I should be able to look at a data problem and decide:
+
+```text
+Collection?
+    ↓
+Array
+
+Fixed structure?
+    ↓
+Tuple
+
+Fixed named choices?
+    ↓
+Enum
+```
+
+I am not trying to memorize three different syntaxes.
+
+I want to understand **why these features exist and what problem each one solves.**
+
+---
+
+# 3. First, How Are Arrays Different in TypeScript?
 
 In JavaScript, I can create an array very easily:
 
@@ -100,7 +146,7 @@ This gives me the first important idea:
 
 ---
 
-# 3. Creating Typed Arrays
+# 4. Creating Typed Arrays
 
 The most common syntax is:
 
@@ -130,7 +176,9 @@ So I can think of it like this:
 
 ```text
 string[]   → array of strings
+
 number[]   → array of numbers
+
 boolean[]  → array of booleans
 ```
 
@@ -142,7 +190,7 @@ type[]
 
 ---
 
-# 4. Why Does the Array Type Matter?
+# 5. Why Does the Array Type Matter?
 
 Suppose I am creating an array of product prices:
 
@@ -174,7 +222,9 @@ With a type:
 
 ```text
 TypeScript knows what belongs there.
+
         ↓
+
 TypeScript can warn me about incorrect values.
 ```
 
@@ -182,7 +232,7 @@ This becomes especially useful in backend applications where arrays may contain 
 
 ---
 
-# 5. TypeScript Can Infer Array Types
+# 6. TypeScript Can Infer Array Types
 
 I don't always have to write the type manually.
 
@@ -222,7 +272,7 @@ Instead:
 
 ---
 
-# 6. What If an Array Contains More Than One Type?
+# 7. What If an Array Contains More Than One Type?
 
 Now things become slightly more interesting.
 
@@ -256,7 +306,9 @@ For example:
 
 ```ts
 values.push(50);
+
 values.push("Hello");
+
 values.push(false);
 ```
 
@@ -278,7 +330,7 @@ That difference will become important next.
 
 ---
 
-# 7. Why Do I Need Tuples?
+# 8. Why Do I Need Tuples?
 
 Consider this data:
 
@@ -302,7 +354,9 @@ But maybe I know that:
 
 ```text
 position 0 → user ID
+
 position 1 → username
+
 position 2 → account status
 ```
 
@@ -312,7 +366,7 @@ This is where a **tuple** becomes useful.
 
 ---
 
-# 8. Understanding Tuples
+# 9. Understanding Tuples
 
 A tuple allows me to specify the type of each position.
 
@@ -324,7 +378,9 @@ Now TypeScript understands:
 
 ```text
 position 0 → number
+
 position 1 → string
+
 position 2 → boolean
 ```
 
@@ -342,7 +398,7 @@ This is the main idea I need to remember:
 
 ---
 
-# 9. Why Does Position Matter in a Tuple?
+# 10. Why Does Position Matter in a Tuple?
 
 Look at this:
 
@@ -377,6 +433,7 @@ I said:
 
 ```text
 position 0 must be number
+
 position 1 must be string
 ```
 
@@ -384,6 +441,7 @@ But I provided:
 
 ```text
 position 0 → string
+
 position 1 → number
 ```
 
@@ -391,7 +449,7 @@ So the tuple gives me more structure than a normal union array.
 
 ---
 
-# 10. Tuple vs Union Array
+# 11. Tuple vs Union Array
 
 This is an important distinction.
 
@@ -435,9 +493,12 @@ So:
 
 ```text
 Union Array
+
 → allowed types matter
 
+
 Tuple
+
 → allowed types + positions matter
 ```
 
@@ -445,7 +506,7 @@ This is one of the most important differences in this lesson.
 
 ---
 
-# 11. Accessing Tuple Values
+# 12. Accessing Tuple Values
 
 Because TypeScript knows the position types, it can also understand what I get back.
 
@@ -453,6 +514,7 @@ Because TypeScript knows the position types, it can also understand what I get b
 let user: [number, string] = [101, "Vivek"];
 
 let id = user[0];
+
 let username = user[1];
 ```
 
@@ -460,6 +522,7 @@ TypeScript knows:
 
 ```text
 user[0] → number
+
 user[1] → string
 ```
 
@@ -475,7 +538,7 @@ So TypeScript can use that information when I access the values.
 
 ---
 
-# 12. Tuple Destructuring
+# 13. Tuple Destructuring
 
 I can also destructure a tuple:
 
@@ -503,6 +566,7 @@ For example, conceptually:
 
 ```text
 return
+
 [
     userId,
     username
@@ -513,7 +577,7 @@ A tuple allows me to describe exactly what that returned structure contains.
 
 ---
 
-# 13. Tuples Should Not Replace Normal Arrays
+# 14. Tuples Should Not Replace Normal Arrays
 
 I need to be careful here.
 
@@ -529,6 +593,7 @@ makes sense because:
 
 ```text
 ID
+
 Username
 ```
 
@@ -550,22 +615,28 @@ So I should ask myself:
 
 ```text
 Collection
+
     ↓
+
 Array
 
+
 Fixed structure
+
     ↓
+
 Tuple
 ```
 
 ---
 
-# 14. Now I Have Another Problem: Fixed Choices
+# 15. Now I Have Another Problem: Fixed Choices
 
 So far I can represent:
 
 ```text
 Collections → Arrays
+
 Fixed structures → Tuples
 ```
 
@@ -575,7 +646,9 @@ For example, a user's role might be:
 
 ```text
 admin
+
 user
+
 manager
 ```
 
@@ -583,7 +656,9 @@ A user's account status might be:
 
 ```text
 active
+
 inactive
+
 blocked
 ```
 
@@ -591,8 +666,11 @@ An order might have:
 
 ```text
 pending
+
 shipped
+
 delivered
+
 cancelled
 ```
 
@@ -608,15 +686,15 @@ This leads me to enums.
 
 ---
 
-# 15. Understanding Enums
+# 16. Understanding Enums
 
 An enum allows me to define named members that represent a set of values.
 
 ```ts
 enum Role {
-  Admin,
-  User,
-  Manager,
+    Admin,
+    User,
+    Manager
 }
 ```
 
@@ -630,8 +708,11 @@ Instead of treating the role as just some random value, I have defined a specifi
 
 ```text
 Role
+
  ├── Admin
+
  ├── User
+
  └── Manager
 ```
 
@@ -641,15 +722,15 @@ So the main idea is:
 
 ---
 
-# 16. Numeric Enums
+# 17. Numeric Enums
 
 By default, enum members receive numeric values.
 
 ```ts
 enum Role {
-  Admin,
-  User,
-  Manager,
+    Admin,
+    User,
+    Manager
 }
 ```
 
@@ -657,7 +738,9 @@ Conceptually:
 
 ```text
 Admin   → 0
+
 User    → 1
+
 Manager → 2
 ```
 
@@ -685,15 +768,15 @@ is a named enum member.
 
 ---
 
-# 17. String Enums
+# 18. String Enums
 
 I can also explicitly give enum members string values.
 
 ```ts
 enum Role {
-  Admin = "admin",
-  User = "user",
-  Manager = "manager",
+    Admin = "admin",
+    User = "user",
+    Manager = "manager"
 }
 ```
 
@@ -715,9 +798,9 @@ For example:
 
 ```ts
 enum OrderStatus {
-  Pending = "pending",
-  Shipped = "shipped",
-  Delivered = "delivered",
+    Pending = "pending",
+    Shipped = "shipped",
+    Delivered = "delivered"
 }
 ```
 
@@ -725,15 +808,15 @@ Now I have a clear set of possible order statuses.
 
 ---
 
-# 18. Using Enums as Types
+# 19. Using Enums as Types
 
 An enum can also be used as a type.
 
 ```ts
 enum Role {
-  Admin = "admin",
-  User = "user",
-  Manager = "manager",
+    Admin = "admin",
+    User = "user",
+    Manager = "manager"
 }
 
 let role: Role = Role.Admin;
@@ -745,7 +828,7 @@ I can also use it in a function:
 
 ```ts
 function printRole(role: Role): void {
-  console.log(role);
+    console.log(role);
 }
 ```
 
@@ -759,7 +842,7 @@ This makes the relationship between the function and the allowed role values cle
 
 ---
 
-# 19. Array vs Tuple vs Enum
+# 20. Array vs Tuple vs Enum
 
 Now I want to make the difference very clear.
 
@@ -773,6 +856,7 @@ I have a collection.
 
 ```text
 Array
+
 → many values
 ```
 
@@ -786,6 +870,7 @@ I have a fixed structure.
 
 ```text
 Tuple
+
 → specific value at a specific position
 ```
 
@@ -793,9 +878,9 @@ Tuple
 
 ```ts
 enum Role {
-  Admin,
-  User,
-  Manager,
+    Admin,
+    User,
+    Manager
 }
 ```
 
@@ -803,6 +888,7 @@ I have predefined named choices.
 
 ```text
 Enum
+
 → fixed set of named values
 ```
 
@@ -810,13 +896,15 @@ The simplest mental model:
 
 ```text
 Array  → Collection
+
 Tuple  → Structure
+
 Enum   → Choices
 ```
 
 ---
 
-# 20. When Should I Use Which One?
+# 21. When Should I Use Which One?
 
 Instead of memorizing definitions, I can ask myself a question.
 
@@ -852,8 +940,8 @@ An enum may make sense.
 
 ```ts
 enum Role {
-  Admin = "admin",
-  User = "user",
+    Admin = "admin",
+    User = "user"
 }
 ```
 
@@ -861,28 +949,36 @@ So my decision process becomes:
 
 ```text
 Collection?
+
     ↓
+
 Array
 
+
 Fixed positional structure?
+
     ↓
+
 Tuple
 
+
 Fixed named choices?
+
     ↓
+
 Enum
 ```
 
 ---
 
-# 21. Everything Together
+# 22. Everything Together
 
 Now I can combine the three concepts in a small example.
 
 ```ts
 enum Role {
-  Admin = "admin",
-  User = "user",
+    Admin = "admin",
+    User = "user"
 }
 
 let userIds: number[] = [101, 102, 103];
@@ -903,14 +999,16 @@ This is an array because I have a collection of IDs.
 ### `user`
 
 ```ts
-[number, string, Role];
+[number, string, Role]
 ```
 
 This is a tuple because each position has a meaning:
 
 ```text
 position 0 → user ID
+
 position 1 → username
+
 position 2 → role
 ```
 
@@ -926,21 +1024,29 @@ So everything fits together:
 
 ```text
 User IDs
+
     ↓
+
 Array
 
+
 User information
+
     ↓
+
 Tuple
 
+
 User role
+
     ↓
+
 Enum
 ```
 
 ---
 
-# 22. How This Fits My Backend Goal
+# 23. How This Fits My Backend Goal
 
 My goal is not to become a TypeScript type-system expert.
 
@@ -954,11 +1060,17 @@ For example, backend code may contain:
 
 ```text
 arrays of users
+
 arrays of IDs
+
 arrays of products
+
 fixed data structures
+
 roles
+
 statuses
+
 permissions
 ```
 
@@ -968,7 +1080,9 @@ I just need to recognize:
 
 ```text
 "This is a collection."
+
 "This is a fixed structure."
+
 "This is a fixed set of choices."
 ```
 
@@ -976,14 +1090,14 @@ Once I can recognize the problem, the syntax becomes much easier.
 
 ---
 
-# 23. A Small Backend-Style Example
+# 24. A Small Backend-Style Example
 
 Suppose I am working with users.
 
 ```ts
 enum Role {
-  Admin = "admin",
-  User = "user",
+    Admin = "admin",
+    User = "user"
 }
 
 let userIds: number[] = [101, 102, 103];
@@ -995,15 +1109,23 @@ Now I can read this code naturally:
 
 ```text
 userIds
+
 → collection of user IDs
 
+
 user
+
 → fixed structure containing:
+
    ID
+
    username
+
    role
 
+
 Role
+
 → predefined role choices
 ```
 
@@ -1011,7 +1133,7 @@ This is the kind of understanding I want before moving into Node.js + TypeScript
 
 ---
 
-# 24. Common Mistakes I Should Avoid
+# 25. Common Mistakes I Should Avoid
 
 ## Mistake 1 — Typing everything manually
 
@@ -1055,6 +1177,7 @@ The second says:
 
 ```text
 position 0 → number
+
 position 1 → string
 ```
 
@@ -1080,8 +1203,8 @@ It represents a set of named members.
 
 ```ts
 enum Role {
-  Admin,
-  User,
+    Admin,
+    User
 }
 ```
 
@@ -1089,6 +1212,7 @@ The important part is the named choices:
 
 ```text
 Role.Admin
+
 Role.User
 ```
 
@@ -1100,8 +1224,11 @@ I don't want to memorize:
 
 ```text
 []
+
 <T>
+
 []
+
 enum
 ```
 
@@ -1111,15 +1238,23 @@ Instead:
 
 ```text
 I need a collection
+
     ↓
+
 Array
 
+
 I need a fixed structure
+
     ↓
+
 Tuple
 
+
 I need named choices
+
     ↓
+
 Enum
 ```
 
@@ -1127,31 +1262,47 @@ That mental decision is more useful than memorizing syntax.
 
 ---
 
-# 25. My Mental Model
+# 26. My Mental Model
 
 I want to remember this lesson in terms of the **problem I am solving**.
 
 ```text
 I have many values
+
         ↓
+
 Array
+
         ↓
+
 string[]
+
 number[]
+
 Array<T>
+```
 
-
+```text
 I have a small fixed structure
+
         ↓
+
 Tuple
+
         ↓
+
 [number, string, boolean]
+```
 
-
+```text
 I have predefined named choices
+
         ↓
+
 Enum
+
         ↓
+
 Admin / User / Manager
 ```
 
@@ -1167,35 +1318,53 @@ Enum   → Fixed choices
 
 ---
 
-# 26. Final Flow
+# 27. Final Flow
 
 When I encounter some data, I can think:
 
 ```text
 What am I trying to represent?
+
               ↓
+
        A collection?
+
               ↓
+
              Yes
+
               ↓
+
             Array
+```
+
+```text
               ↓
---------------------------------
-              ↓
+
    A fixed structure where
       position matters?
+
               ↓
+
              Yes
+
               ↓
+
             Tuple
+```
+
+```text
               ↓
---------------------------------
-              ↓
+
    A fixed set of named
-          choices?
+         choices?
+
               ↓
+
              Yes
+
               ↓
+
             Enum
 ```
 
@@ -1207,21 +1376,29 @@ I am learning three different ways to describe data:
 
 ```text
 Collection
+
     ↓
+
 Array
 
+
 Structure
+
     ↓
+
 Tuple
 
+
 Choices
+
     ↓
+
 Enum
 ```
 
 ---
 
-# 27. Self-Test
+# 28. Self-Test
 
 Before moving to the next lesson, I should be able to explain these without looking at my notes:
 
@@ -1244,7 +1421,7 @@ If I can answer these naturally, I have understood the lesson instead of just me
 
 ---
 
-# 28. Final Recap
+# 29. Final Recap
 
 In this lesson, I learned how TypeScript can describe different kinds of data structures.
 
@@ -1276,8 +1453,8 @@ Used when I have a fixed structure where position matters.
 
 ```ts
 enum Role {
-  Admin = "admin",
-  User = "user",
+    Admin = "admin",
+    User = "user"
 }
 ```
 
@@ -1287,12 +1464,17 @@ The main thing I want to remember is:
 
 ```text
 Array
+
 → "I have a collection."
 
+
 Tuple
+
 → "I have a fixed structure."
 
+
 Enum
+
 → "I have a fixed set of named choices."
 ```
 
