@@ -1,4 +1,4 @@
-# 12 — Interface vs Type
+# 12 — Interface vs Type Aliases
 
 ## 1. Why Am I Learning This?
 
