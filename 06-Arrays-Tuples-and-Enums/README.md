@@ -6,15 +6,13 @@ So far, I have mainly worked with individual values:
 
 ```ts
 let username: string = "Vivek";
-
 let age: number = 20;
-
 let isLoggedIn: boolean = true;
 ```
 
 But real applications don't work with only one value at a time.
 
-In backend development, I will deal with things like:
+In backend development, I will work with things like:
 
 ```text
 users
@@ -34,19 +32,15 @@ For example:
 let usernames = ["Vivek", "Rahul", "Aman"];
 ```
 
-Now I have a new question:
+Now I have a few questions:
 
-> How do I tell TypeScript what kind of data this collection should contain?
+> How do I tell TypeScript what kind of values an array should contain?
 
-And another question:
+> What if each position in a structure has a different meaning?
 
-> What if the data has a fixed structure where each position has a different meaning?
+> What if I have a fixed set of possible choices like `admin`, `user`, or `manager`?
 
-And finally:
-
-> What if I have a fixed set of possible values such as `admin`, `user`, or `manager`?
-
-These problems lead me to three important TypeScript features:
+These problems lead to three important TypeScript features:
 
 ```text
 Arrays
@@ -56,33 +50,30 @@ Tuples
 Enums
 ```
 
-The goal of this lesson is to understand **what problem each one solves and when I should use it.**
+The goal of this lesson is not to memorize three different syntaxes.
+
+I want to understand **what problem each one solves and when I should use it.**
 
 ---
 
-# 2. What Am I Going to Study?
+## 2. What Am I Going to Study?
 
-In this lesson, I am going to study:
+In this lesson, I am going to learn:
 
-* How arrays work with TypeScript
-* Typed arrays such as `string[]`, `number[]`, and `boolean[]`
-* The `Array<T>` syntax
-* How TypeScript infers array types
-* Arrays containing multiple types using union types
-* Why a union array is different from a tuple
-* What tuples are
-* How tuple positions have specific types
-* Accessing values from tuples
+* Typed arrays
+* `string[]`, `number[]`, and `boolean[]`
+* `Array<T>` syntax
+* Array type inference
+* Union arrays
+* Tuples and positional types
 * Tuple destructuring
-* When I should use a tuple instead of an array
-* What enums are
-* Numeric enums
-* String enums
+* Tuples vs union arrays
+* Enums
+* Numeric and string enums
 * Using enums as types
-* The difference between Arrays, Tuples, and Enums
-* When each one makes sense in backend development
+* When to use Arrays, Tuples, and Enums
 
-By the end of this lesson, I should be able to look at a data problem and decide:
+By the end, I should be able to think:
 
 ```text
 Collection?
@@ -98,23 +89,17 @@ Fixed named choices?
 Enum
 ```
 
-I am not trying to memorize three different syntaxes.
-
-I want to understand **why these features exist and what problem each one solves.**
-
 ---
 
-# 3. First, How Are Arrays Different in TypeScript?
+# 3. Arrays in TypeScript
 
-In JavaScript, I can create an array very easily:
+In JavaScript, I can create an array easily:
 
 ```ts
 let names = ["Vivek", "Rahul", "Aman"];
 ```
 
-JavaScript does not require me to specify what type of values the array contains.
-
-TypeScript can understand the type automatically:
+TypeScript can automatically understand that this is an array of strings:
 
 ```text
 names
@@ -122,15 +107,13 @@ names
 string[]
 ```
 
-So TypeScript knows that the array contains strings.
-
-That means this is fine:
+So this is allowed:
 
 ```ts
 names.push("Karan");
 ```
 
-But this should not be allowed:
+But this is not:
 
 ```ts
 names.push(100);
@@ -138,11 +121,11 @@ names.push(100);
 
 Why?
 
-Because I originally created an array of strings.
+Because TypeScript has inferred that `names` should contain strings.
 
 This gives me the first important idea:
 
-> A typed array tells TypeScript what kind of values are allowed inside the array.
+> **A typed array tells TypeScript what kind of values are allowed inside the array.**
 
 ---
 
@@ -160,7 +143,7 @@ The important part is:
 string[]
 ```
 
-This means:
+It means:
 
 > An array containing strings.
 
@@ -172,17 +155,15 @@ let ages: number[] = [18, 20, 22];
 let isActive: boolean[] = [true, false, true];
 ```
 
-So I can think of it like this:
+So:
 
 ```text
 string[]   → array of strings
-
 number[]   → array of numbers
-
 boolean[]  → array of booleans
 ```
 
-The syntax is simply:
+The general syntax is:
 
 ```text
 type[]
@@ -192,49 +173,37 @@ type[]
 
 # 5. Why Does the Array Type Matter?
 
-Suppose I am creating an array of product prices:
+Suppose I have product prices:
 
 ```ts
 let prices: number[] = [100, 200, 300];
 ```
 
-Now imagine somewhere later I accidentally do:
+If I accidentally write:
 
 ```ts
 prices.push("500");
 ```
 
-This is a mistake.
+TypeScript will catch the mistake.
 
-A price should be a number.
+A price should be a number, so the array should not accept a string.
 
-TypeScript can catch this mistake while I am writing the code.
+This is especially useful in backend development where arrays may contain:
 
-That's the important benefit.
+* User IDs
+* Product IDs
+* Prices
+* Database records
+* Permissions
 
-Without a type:
-
-```text
-I can accidentally put the wrong data inside.
-```
-
-With a type:
-
-```text
-TypeScript knows what belongs there.
-
-        ↓
-
-TypeScript can warn me about incorrect values.
-```
-
-This becomes especially useful in backend applications where arrays may contain IDs, database records, prices, or other structured data.
+TypeScript helps me keep the data consistent.
 
 ---
 
 # 6. TypeScript Can Infer Array Types
 
-I don't always have to write the type manually.
+I don't always have to manually write the type.
 
 For example:
 
@@ -242,7 +211,7 @@ For example:
 let names = ["Vivek", "Rahul", "Aman"];
 ```
 
-TypeScript already has enough information to understand:
+TypeScript understands:
 
 ```text
 names → string[]
@@ -260,7 +229,7 @@ TypeScript understands:
 numbers → number[]
 ```
 
-This connects directly to what I learned in Lesson 03 about **type inference**.
+This connects directly with what I learned in **Lesson 03 — Type Annotations and Type Inference**.
 
 So I should not think:
 
@@ -272,17 +241,49 @@ Instead:
 
 ---
 
-# 7. What If an Array Contains More Than One Type?
+# 7. `Array<T>` Syntax
 
-Now things become slightly more interesting.
-
-Suppose I have:
+There is another way to write an array type:
 
 ```ts
-let values = [10, "Vivek", true];
+let names: Array<string> = ["Vivek", "Rahul"];
 ```
 
-There are three different types here:
+This means the same thing as:
+
+```ts
+let names: string[] = ["Vivek", "Rahul"];
+```
+
+I can think of it as:
+
+```text
+string[]
+    =
+Array<string>
+```
+
+For simple arrays, `string[]` is usually easier to read.
+
+The important thing is that I recognize both forms when I see them in TypeScript code.
+
+---
+
+# 8. What If an Array Contains More Than One Type?
+
+Sometimes an array is intentionally allowed to contain different types.
+
+For example:
+
+```ts
+let values: (number | string | boolean)[] = [
+    10,
+    "Vivek",
+    true
+];
+```
+
+Here each element can be:
 
 ```text
 number
@@ -290,115 +291,99 @@ string
 boolean
 ```
 
-Sometimes mixed values are intentional.
-
-TypeScript can represent an array containing multiple allowed types using a union:
-
-```ts
-let values: (number | string | boolean)[] = [10, "Vivek", true];
-```
-
-Now the rule is:
-
-> Every element must be either a number, string, or boolean.
-
-For example:
+So these are allowed:
 
 ```ts
 values.push(50);
-
 values.push("Hello");
-
 values.push(false);
 ```
 
-are allowed.
-
-But:
+But this is not:
 
 ```ts
 values.push({ name: "Vivek" });
 ```
 
-is not.
+because the object is not one of the allowed types.
 
-This is useful because it shows me something important:
+This is called a **union array**.
 
-> A union array and a tuple are not the same thing.
+The important thing is:
 
-That difference will become important next.
+> A union array tells me which types are allowed, but it does not assign a different type to each position.
+
+That difference becomes important when I learn tuples.
 
 ---
 
-# 8. Why Do I Need Tuples?
+# 9. Why Do I Need Tuples?
 
-Consider this data:
-
-```ts
-let user = [101, "Vivek", true];
-```
-
-I could describe it as:
+Consider this:
 
 ```ts
-let user: (number | string | boolean)[] = [101, "Vivek", true];
+let user: (number | string | boolean)[] = [
+    101,
+    "Vivek",
+    true
+];
 ```
 
-But this only tells TypeScript:
+This tells TypeScript:
 
 > The array can contain numbers, strings, and booleans.
 
-It does **not** clearly describe what each position means.
+But it doesn't clearly describe what each position means.
 
-But maybe I know that:
+Maybe I know:
 
 ```text
 position 0 → user ID
-
 position 1 → username
-
 position 2 → account status
 ```
 
-Now I want to describe the exact structure.
+Now I want to describe that exact structure.
 
 This is where a **tuple** becomes useful.
 
 ---
 
-# 9. Understanding Tuples
+# 10. Understanding Tuples
 
-A tuple allows me to specify the type of each position.
+A tuple allows me to specify the type of each position:
 
 ```ts
-let user: [number, string, boolean] = [101, "Vivek", true];
+let user: [number, string, boolean] = [
+    101,
+    "Vivek",
+    true
+];
 ```
 
 Now TypeScript understands:
 
 ```text
 position 0 → number
-
 position 1 → string
-
 position 2 → boolean
 ```
 
-So the tuple:
+So:
 
 ```ts
-[number, string, boolean];
+[number, string, boolean]
 ```
 
-is describing a specific structure.
+describes a specific positional structure.
 
-This is the main idea I need to remember:
+The main idea:
 
-> A tuple is an array-like structure where the type and meaning of each position can be defined.
+> **A tuple is an array-like structure where the type of each position is defined.**
 
 ---
 
-# 10. Why Does Position Matter in a Tuple?
+# 11. Why Does Position Matter?
 
 Look at this:
 
@@ -409,23 +394,23 @@ let user: [number, string] = [101, "Vivek"];
 I have defined:
 
 ```text
-0 → number
-1 → string
+position 0 → number
+position 1 → string
 ```
 
 So this is correct:
 
 ```ts
-[101, "Vivek"];
+[101, "Vivek"]
 ```
 
 But this is incorrect:
 
 ```ts
-["Vivek", 101];
+["Vivek", 101]
 ```
 
-Even though both values exist and both types are present.
+Even though the same two types are present.
 
 The problem is their positions.
 
@@ -433,7 +418,6 @@ I said:
 
 ```text
 position 0 must be number
-
 position 1 must be string
 ```
 
@@ -441,19 +425,18 @@ But I provided:
 
 ```text
 position 0 → string
-
 position 1 → number
 ```
 
-So the tuple gives me more structure than a normal union array.
+So a tuple gives me more structure than a normal union array.
 
 ---
 
-# 11. Tuple vs Union Array
+# 12. Tuple vs Union Array
 
-This is an important distinction.
+This is one of the most important differences in this lesson.
 
-Consider:
+### Union Array
 
 ```ts
 let values: (number | string)[] = [101, "Vivek"];
@@ -461,25 +444,17 @@ let values: (number | string)[] = [101, "Vivek"];
 
 This means:
 
-> This array can contain numbers or strings.
+> The array can contain numbers or strings.
 
-The positions do not have fixed meanings.
+The positions are not fixed.
 
-I could have:
-
-```ts
-[101, "Vivek"];
-```
-
-or:
+For example, this is also valid:
 
 ```ts
-["Vivek", 101];
+["Vivek", 101]
 ```
 
-Both follow the general rule.
-
-Now look at:
+### Tuple
 
 ```ts
 let user: [number, string] = [101, "Vivek"];
@@ -487,58 +462,55 @@ let user: [number, string] = [101, "Vivek"];
 
 This means:
 
-> Position 0 is a number and position 1 is a string.
+> Position 0 must be a number and position 1 must be a string.
 
 So:
 
 ```text
 Union Array
-
-→ allowed types matter
-
+    ↓
+Allowed types matter
 
 Tuple
-
-→ allowed types + positions matter
+    ↓
+Allowed types + positions matter
 ```
 
-This is one of the most important differences in this lesson.
+This is the key difference I need to remember.
 
 ---
 
-# 12. Accessing Tuple Values
+# 13. Accessing Tuple Values
 
-Because TypeScript knows the position types, it can also understand what I get back.
+Because TypeScript knows the type of each position, it also knows what I get back.
 
 ```ts
 let user: [number, string] = [101, "Vivek"];
 
 let id = user[0];
-
 let username = user[1];
 ```
 
-TypeScript knows:
+TypeScript understands:
 
 ```text
 user[0] → number
-
 user[1] → string
 ```
 
 Why?
 
-Because I already defined the tuple:
+Because I already defined:
 
 ```ts
-[number, string];
+[number, string]
 ```
 
 So TypeScript can use that information when I access the values.
 
 ---
 
-# 13. Tuple Destructuring
+# 14. Tuple Destructuring
 
 I can also destructure a tuple:
 
@@ -548,129 +520,102 @@ let user: [number, string] = [101, "Vivek"];
 let [id, username] = user;
 ```
 
-Now TypeScript understands:
+Now TypeScript knows:
 
 ```text
 id
-↓
+ ↓
 number
 
 username
-↓
+ ↓
 string
 ```
 
 This is useful when a function returns a small fixed group of values.
 
-For example, conceptually:
+The important idea is:
 
-```text
-return
-
-[
-    userId,
-    username
-]
-```
-
-A tuple allows me to describe exactly what that returned structure contains.
+> **The tuple describes the structure, and TypeScript carries that structure into the variables I create from it.**
 
 ---
 
-# 14. Tuples Should Not Replace Normal Arrays
+# 15. When Should I Use an Array or Tuple?
 
-I need to be careful here.
+I should ask myself:
 
-A tuple is useful when the structure itself has meaning.
+> Is this data a collection, or is it a small fixed structure?
 
-For example:
-
-```ts
-let user: [number, string] = [101, "Vivek"];
-```
-
-makes sense because:
-
-```text
-ID
-
-Username
-```
-
-are two different pieces of information.
-
-But if I have:
+### Collection
 
 ```ts
 let users: string[] = ["Vivek", "Rahul", "Aman"];
 ```
 
-I don't need a tuple.
-
-This is a collection.
-
-So I should ask myself:
-
-> Is this data a collection, or is it a small fixed structure?
+Use an **array**.
 
 ```text
-Collection
-
-    ↓
-
 Array
-
-
-Fixed structure
-
-    ↓
-
-Tuple
+  ↓
+Collection of values
 ```
+
+### Fixed Structure
+
+```ts
+let user: [number, string] = [101, "Vivek"];
+```
+
+Use a **tuple**.
+
+```text
+Tuple
+  ↓
+Fixed positional structure
+```
+
+I should not use tuples to represent large collections.
 
 ---
 
-# 15. Now I Have Another Problem: Fixed Choices
+# 16. Now I Have Another Problem: Fixed Choices
 
 So far I can represent:
 
 ```text
-Collections → Arrays
+Collections
+    ↓
+Arrays
 
-Fixed structures → Tuples
+Fixed structures
+    ↓
+Tuples
 ```
 
-But backend applications often have another type of data.
+But backend applications also contain fixed sets of choices.
 
 For example, a user's role might be:
 
 ```text
 admin
-
 user
-
 manager
 ```
 
-A user's account status might be:
+An account status might be:
 
 ```text
 active
-
 inactive
-
 blocked
 ```
 
-An order might have:
+An order might be:
 
 ```text
 pending
-
 shipped
-
 delivered
-
 cancelled
 ```
 
@@ -680,15 +625,13 @@ They aren't tuples.
 
 They are **fixed sets of possible choices**.
 
-I want my code to represent that idea clearly.
-
-This leads me to enums.
+This is where enums come in.
 
 ---
 
-# 16. Understanding Enums
+# 17. Understanding Enums
 
-An enum allows me to define named members that represent a set of values.
+An enum allows me to define named members representing a set of values.
 
 ```ts
 enum Role {
@@ -704,27 +647,24 @@ Now I can use:
 let role: Role = Role.Admin;
 ```
 
-Instead of treating the role as just some random value, I have defined a specific group:
+I can think about the enum like this:
 
 ```text
 Role
-
  ├── Admin
-
  ├── User
-
  └── Manager
 ```
 
-So the main idea is:
+The main idea is:
 
-> An enum gives names to a predefined set of values.
+> **An enum gives names to a predefined set of values.**
 
 ---
 
-# 17. Numeric Enums
+# 18. Numeric Enums
 
-By default, enum members receive numeric values.
+By default, TypeScript assigns numeric values to enum members:
 
 ```ts
 enum Role {
@@ -738,9 +678,7 @@ Conceptually:
 
 ```text
 Admin   → 0
-
 User    → 1
-
 Manager → 2
 ```
 
@@ -750,7 +688,7 @@ So:
 console.log(Role.Admin);
 ```
 
-will produce:
+produces:
 
 ```text
 0
@@ -758,19 +696,19 @@ will produce:
 
 For this lesson, I don't need to focus heavily on the internal numbering.
 
-What matters is understanding that:
+What matters is that:
 
 ```ts
-Role.Admin;
+Role.Admin
 ```
 
 is a named enum member.
 
 ---
 
-# 18. String Enums
+# 19. String Enums
 
-I can also explicitly give enum members string values.
+I can also explicitly give enum members string values:
 
 ```ts
 enum Role {
@@ -792,7 +730,7 @@ produces:
 admin
 ```
 
-This is easier to understand when the actual values are meaningful strings.
+String values are often easier to understand when the actual value matters.
 
 For example:
 
@@ -804,13 +742,13 @@ enum OrderStatus {
 }
 ```
 
-Now I have a clear set of possible order statuses.
+Now I have a clearly defined set of order statuses.
 
 ---
 
-# 19. Using Enums as Types
+# 20. Using Enums as Types
 
-An enum can also be used as a type.
+An enum can also be used as a type:
 
 ```ts
 enum Role {
@@ -822,29 +760,25 @@ enum Role {
 let role: Role = Role.Admin;
 ```
 
-Now `role` is typed using the `Role` enum.
-
 I can also use it in a function:
 
 ```ts
 function printRole(role: Role): void {
     console.log(role);
 }
-```
 
-Then:
-
-```ts
 printRole(Role.Admin);
 ```
+
+Now the function expects a value from the `Role` enum.
 
 This makes the relationship between the function and the allowed role values clear.
 
 ---
 
-# 20. Array vs Tuple vs Enum
+# 21. Array vs Tuple vs Enum
 
-Now I want to make the difference very clear.
+Now I can compare the three concepts.
 
 ### Array
 
@@ -852,12 +786,10 @@ Now I want to make the difference very clear.
 let names: string[] = ["Vivek", "Rahul", "Aman"];
 ```
 
-I have a collection.
+I have a **collection**.
 
 ```text
-Array
-
-→ many values
+Array → Collection
 ```
 
 ### Tuple
@@ -866,59 +798,51 @@ Array
 let user: [number, string] = [101, "Vivek"];
 ```
 
-I have a fixed structure.
+I have a **fixed positional structure**.
 
 ```text
-Tuple
-
-→ specific value at a specific position
+Tuple → Structure
 ```
 
 ### Enum
 
 ```ts
 enum Role {
-    Admin,
-    User,
-    Manager
+    Admin = "admin",
+    User = "user",
+    Manager = "manager"
 }
 ```
 
-I have predefined named choices.
+I have **predefined named choices**.
 
 ```text
-Enum
-
-→ fixed set of named values
+Enum → Choices
 ```
 
 The simplest mental model:
 
 ```text
 Array  → Collection
-
-Tuple  → Structure
-
-Enum   → Choices
+Tuple  → Fixed Structure
+Enum   → Fixed Choices
 ```
 
 ---
 
-# 21. When Should I Use Which One?
+# 22. When Should I Use Which One?
 
-Instead of memorizing definitions, I can ask myself a question.
+Instead of memorizing definitions, I can ask myself three questions.
 
 ### Question 1
 
-> Do I have multiple values of the same general type?
+> Do I have multiple values forming a collection?
 
 Use an array.
 
 ```ts
 let userIds: number[] = [101, 102, 103];
 ```
-
----
 
 ### Question 2
 
@@ -929,8 +853,6 @@ A tuple may make sense.
 ```ts
 let user: [number, string] = [101, "Vivek"];
 ```
-
----
 
 ### Question 3
 
@@ -949,31 +871,23 @@ So my decision process becomes:
 
 ```text
 Collection?
-
     ↓
-
 Array
 
-
 Fixed positional structure?
-
     ↓
-
 Tuple
 
-
 Fixed named choices?
-
     ↓
-
 Enum
 ```
 
 ---
 
-# 22. Everything Together
+# 23. Everything Together
 
-Now I can combine the three concepts in a small example.
+Now I can combine the three concepts:
 
 ```ts
 enum Role {
@@ -983,10 +897,14 @@ enum Role {
 
 let userIds: number[] = [101, 102, 103];
 
-let user: [number, string, Role] = [101, "Vivek", Role.Admin];
+let user: [number, string, Role] = [
+    101,
+    "Vivek",
+    Role.Admin
+];
 ```
 
-Now I can understand exactly why each feature is being used.
+Now I can understand why each feature is being used.
 
 ### `userIds`
 
@@ -1006,9 +924,7 @@ This is a tuple because each position has a meaning:
 
 ```text
 position 0 → user ID
-
 position 1 → username
-
 position 2 → role
 ```
 
@@ -1020,57 +936,41 @@ enum Role
 
 This defines the available role choices.
 
-So everything fits together:
+So:
 
 ```text
 User IDs
-
-    ↓
-
+   ↓
 Array
 
-
 User information
-
-    ↓
-
+   ↓
 Tuple
 
-
 User role
-
-    ↓
-
+   ↓
 Enum
 ```
 
 ---
 
-# 23. How This Fits My Backend Goal
+# 24. How This Fits My Backend Goal
 
 My goal is not to become a TypeScript type-system expert.
 
 My goal is:
 
-> Learn enough TypeScript that it does not become an obstacle while I am learning backend development.
+> **Learn enough TypeScript that it does not become an obstacle while I am learning backend development.**
 
-These concepts will help me understand common TypeScript code when I start working with Node.js and Express.
-
-For example, backend code may contain:
+These concepts will appear when working with things like:
 
 ```text
 arrays of users
-
 arrays of IDs
-
 arrays of products
-
 fixed data structures
-
 roles
-
 statuses
-
 permissions
 ```
 
@@ -1090,52 +990,9 @@ Once I can recognize the problem, the syntax becomes much easier.
 
 ---
 
-# 24. A Small Backend-Style Example
+# 25. Common Mistakes
 
-Suppose I am working with users.
-
-```ts
-enum Role {
-    Admin = "admin",
-    User = "user"
-}
-
-let userIds: number[] = [101, 102, 103];
-
-let user: [number, string, Role] = [101, "Vivek", Role.Admin];
-```
-
-Now I can read this code naturally:
-
-```text
-userIds
-
-→ collection of user IDs
-
-
-user
-
-→ fixed structure containing:
-
-   ID
-
-   username
-
-   role
-
-
-Role
-
-→ predefined role choices
-```
-
-This is the kind of understanding I want before moving into Node.js + TypeScript.
-
----
-
-# 25. Common Mistakes I Should Avoid
-
-## Mistake 1 — Typing everything manually
+## Mistake 1 — Typing Everything Manually
 
 If TypeScript can already infer:
 
@@ -1149,11 +1006,11 @@ I don't always need:
 let names: string[] = ["Vivek", "Rahul"];
 ```
 
-I should use explicit types when they actually improve clarity or are needed.
+Explicit types are useful when they improve clarity or are actually needed.
 
 ---
 
-## Mistake 2 — Confusing a tuple with a union array
+## Mistake 2 — Confusing a Tuple with a Union Array
 
 These are different:
 
@@ -1167,39 +1024,36 @@ and:
 let user: [number, string] = [101, "Vivek"];
 ```
 
-The first says:
+The first means:
 
 ```text
 number or string can appear in the array
 ```
 
-The second says:
+The second means:
 
 ```text
 position 0 → number
-
 position 1 → string
 ```
 
 ---
 
-## Mistake 3 — Using tuples for large collections
+## Mistake 3 — Using Tuples for Large Collections
 
 A tuple is meant for a fixed structure.
 
-I shouldn't try to represent a list of 50 users as a tuple.
+I shouldn't try to represent a list of many users as a tuple.
 
 That's what arrays are for.
 
 ---
 
-## Mistake 4 — Thinking enums are collections
+## Mistake 4 — Thinking Enums Are Arrays
 
-An enum is not simply:
+An enum is not simply an array of values.
 
-> an array of values.
-
-It represents a set of named members.
+It represents a set of **named members**:
 
 ```ts
 enum Role {
@@ -1208,101 +1062,42 @@ enum Role {
 }
 ```
 
-The important part is the named choices:
+The important part is:
 
 ```text
 Role.Admin
-
 Role.User
 ```
 
 ---
 
-## Mistake 5 — Memorizing syntax without understanding the problem
-
-I don't want to memorize:
-
-```text
-[]
-
-<T>
-
-[]
-
-enum
-```
-
-without understanding why they exist.
-
-Instead:
-
-```text
-I need a collection
-
-    ↓
-
-Array
-
-
-I need a fixed structure
-
-    ↓
-
-Tuple
-
-
-I need named choices
-
-    ↓
-
-Enum
-```
-
-That mental decision is more useful than memorizing syntax.
-
----
-
 # 26. My Mental Model
 
-I want to remember this lesson in terms of the **problem I am solving**.
+I want to remember this lesson through the problem I am solving.
 
 ```text
 I have many values
-
-        ↓
-
-Array
-
-        ↓
-
-string[]
-
-number[]
-
-Array<T>
+       ↓
+     Array
+       ↓
+   string[]
+   number[]
+   Array<T>
 ```
 
 ```text
 I have a small fixed structure
-
-        ↓
-
-Tuple
-
-        ↓
-
+       ↓
+     Tuple
+       ↓
 [number, string, boolean]
 ```
 
 ```text
 I have predefined named choices
-
-        ↓
-
-Enum
-
-        ↓
-
+       ↓
+      Enum
+       ↓
 Admin / User / Manager
 ```
 
@@ -1310,128 +1105,42 @@ The shortest version:
 
 ```text
 Array  → Collection
-
-Tuple  → Fixed structure
-
-Enum   → Fixed choices
+Tuple  → Fixed Structure
+Enum   → Fixed Choices
 ```
 
 ---
 
-# 27. Final Flow
+# 27. Self-Test
 
-When I encounter some data, I can think:
+Before moving to the next lesson, I should be able to answer these without looking at my notes:
 
-```text
-What am I trying to represent?
+1. What does `string[]` mean?
+2. What is the difference between `string[]` and `Array<string>`?
+3. How does TypeScript infer an array type?
+4. What problem does a tuple solve?
+5. Why does position matter in a tuple?
+6. What is the difference between `(number | string)[]` and `[number, string]`?
+7. What problem do enums solve?
+8. What is the difference between numeric and string enums?
+9. When should I use an array?
+10. When should I use a tuple?
+11. When should I use an enum?
+12. Can I explain Array, Tuple, and Enum in my own words?
 
-              ↓
-
-       A collection?
-
-              ↓
-
-             Yes
-
-              ↓
-
-            Array
-```
-
-```text
-              ↓
-
-   A fixed structure where
-      position matters?
-
-              ↓
-
-             Yes
-
-              ↓
-
-            Tuple
-```
-
-```text
-              ↓
-
-   A fixed set of named
-         choices?
-
-              ↓
-
-             Yes
-
-              ↓
-
-            Enum
-```
-
-This is the actual flow I want to remember.
-
-I am not learning three unrelated TypeScript features.
-
-I am learning three different ways to describe data:
-
-```text
-Collection
-
-    ↓
-
-Array
-
-
-Structure
-
-    ↓
-
-Tuple
-
-
-Choices
-
-    ↓
-
-Enum
-```
+If I can answer these naturally, I have understood the concepts instead of just memorizing the syntax.
 
 ---
 
-# 28. Self-Test
+# 28. Final Recap
 
-Before moving to the next lesson, I should be able to explain these without looking at my notes:
-
-1. What problem do typed arrays solve?
-2. What does `string[]` mean?
-3. What does `Array<string>` mean?
-4. Why can TypeScript infer the type of an array?
-5. What problem does a tuple solve?
-6. Why does position matter in a tuple?
-7. What is the difference between `(number | string)[]` and `[number, string]`?
-8. What problem do enums solve?
-9. What is the difference between a numeric enum and a string enum?
-10. When should I use an array?
-11. When should I use a tuple?
-12. When should I use an enum?
-13. Can I explain the difference between Array, Tuple, and Enum in my own words?
-14. Can I explain why these concepts will be useful when I start backend development?
-
-If I can answer these naturally, I have understood the lesson instead of just memorizing its syntax.
-
----
-
-# 29. Final Recap
-
-In this lesson, I learned how TypeScript can describe different kinds of data structures.
-
-### Typed Arrays
+### Array
 
 ```ts
 let names: string[] = ["Vivek", "Rahul"];
 ```
 
-Used when I have a collection of values.
+Used when I have a **collection of values**.
 
 ### `Array<T>`
 
@@ -1439,17 +1148,17 @@ Used when I have a collection of values.
 let names: Array<string> = ["Vivek", "Rahul"];
 ```
 
-Another syntax for describing a typed array.
+Another syntax for a typed array.
 
-### Tuples
+### Tuple
 
 ```ts
 let user: [number, string] = [101, "Vivek"];
 ```
 
-Used when I have a fixed structure where position matters.
+Used when I have a **fixed structure where position matters**.
 
-### Enums
+### Enum
 
 ```ts
 enum Role {
@@ -1458,28 +1167,23 @@ enum Role {
 }
 ```
 
-Used when I have a predefined set of named choices.
+Used when I have a **predefined set of named choices**.
 
 The main thing I want to remember is:
 
 ```text
 Array
-
-→ "I have a collection."
-
+  → "I have a collection."
 
 Tuple
-
-→ "I have a fixed structure."
-
+  → "I have a fixed structure."
 
 Enum
-
-→ "I have a fixed set of named choices."
+  → "I have a fixed set of named choices."
 ```
 
 I don't need to master advanced TypeScript yet.
 
-I just need these fundamentals to become natural enough that when I start writing Node.js + TypeScript code, I can focus on learning backend development instead of getting stuck on the TypeScript syntax.
+I just need these fundamentals to become natural enough that when I start writing Node.js + TypeScript code, I can focus on backend development instead of getting stuck on TypeScript syntax.
 
 **Next: Lesson 07 — Functions in TypeScript**
