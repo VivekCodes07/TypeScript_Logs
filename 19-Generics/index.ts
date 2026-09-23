@@ -46,7 +46,7 @@ function getFirst<T>(items: T[]): T {
         throw new Error("Array is empty");
     }
 
-    return items[0];
+    return items[0]!;
 }
 
 const firstNumber = getFirst([10, 20, 30]);
