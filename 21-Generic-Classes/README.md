@@ -1,10 +1,10 @@
-# 21 — Generic Classes
+# Lesson 21 — Generic Classes
 
 ## Why Am I Learning This?
 
-In the previous lesson, I learned about Generics with functions and arrow functions.
+In the previous lessons, I learned how Generics allow me to write functions that can work with different types.
 
-I learned that:
+For example:
 
 ```ts
 function getValue<T>(value: T): T {
@@ -14,56 +14,36 @@ function getValue<T>(value: T): T {
 
 Here, `T` is a placeholder for a type.
 
-For example:
-
 ```ts
-getValue("Vivek");
+getValue("Vivek");  // T = string
+getValue(20);       // T = number
 ```
 
-means:
+Now I want to use the same Generic concept with **classes**.
 
-```text
-T = string
-```
-
-And:
-
-```ts
-getValue(20);
-```
-
-means:
-
-```text
-T = number
-```
-
-Now I want to use the same idea with **classes**.
-
-A Generic Class allows me to create one class that can work with different types.
+A Generic Class allows me to create **one class that can work with different types** instead of creating a separate class for every type.
 
 ---
 
-# What I Am Going To Study
+# What Am I Going To Learn?
 
 In this lesson, I am going to learn:
 
-* What a Generic Class is
-* What `<T>` means in a class
-* How `T` is used with class properties
-* How `T` is used with constructors
-* How `T` is used with methods
-* How the actual type is decided
-* How the same class can work with different types
-* How a Generic Class can work with objects
+1. What a Generic Class is
+2. What `<T>` means in a class
+3. How `T` works with properties
+4. How `T` works with constructors
+5. How `T` works with methods
+6. How the actual type is decided
+7. How Generic Classes work with objects
+8. How Generics provide type safety
+9. How TypeScript can infer the Generic type
 
 ---
 
-# 1. First Understand the Problem
+# 1. The Problem
 
-Suppose I want a class that stores a value.
-
-I could create a class for a string:
+Suppose I want a class that stores a string.
 
 ```ts
 class StringStorage {
@@ -76,7 +56,7 @@ class StringStorage {
 }
 ```
 
-Then if I want to store a number, I would need another class:
+If I want to store a number, I would need another class:
 
 ```ts
 class NumberStorage {
@@ -91,25 +71,18 @@ class NumberStorage {
 
 Both classes are doing almost the same thing.
 
-The only difference is the type.
+The only difference is the type:
 
 ```text
-StringStorage
-    ↓
-item is string
-
-NumberStorage
-    ↓
-item is number
+StringStorage → string
+NumberStorage → number
 ```
 
-Instead of creating multiple classes, I can use **Generics**.
+Instead of creating multiple classes, I can use a Generic Class.
 
 ---
 
 # 2. Creating a Generic Class
-
-I can create one class:
 
 ```ts
 class Storage<T> {
@@ -125,25 +98,25 @@ class Storage<T> {
 The important part is:
 
 ```ts
-Storage<T>
+class Storage<T>
 ```
 
 Here, `T` is a **Generic Type Parameter**.
 
-It means:
+I am basically saying:
 
 ```text
-I don't know the actual type yet.
+"I don't know the type yet.
 
 I will decide the type
-when I create the object.
+when I create the object."
 ```
 
-So `T` is just a placeholder.
+So `T` is a placeholder for the actual type.
 
 ---
 
-# 3. Understanding `T` Inside the Class
+# 3. How Does `T` Work Inside the Class?
 
 Look at the class again:
 
@@ -158,147 +131,101 @@ class Storage<T> {
 }
 ```
 
-There are two important uses of `T`.
+`T` is being used in both the property and constructor.
 
-First:
+### Property
 
 ```ts
 item: T;
 ```
 
-This means the `item` property will have whatever type `T` becomes.
+The property will have whatever type `T` becomes.
 
-Second:
+### Constructor
 
 ```ts
 constructor(item: T)
 ```
 
-This means the constructor accepts the same type.
+The constructor also expects that same type.
 
-So:
+So the flow is:
 
 ```text
 <T>
  ↓
 Type Placeholder
  ↓
-Used by the property
+Used by property
  ↓
-Used by the constructor
+Used by constructor
 ```
 
 ---
 
 # 4. Using the Class With a String
 
-Now I can create an object:
+Now I create an object:
 
 ```ts
 const nameStorage = new Storage<string>("Vivek");
 ```
 
-Look at:
+Here:
 
 ```ts
 Storage<string>
-```
-
-Here I am telling TypeScript:
-
-```text
-T = string
-```
-
-So this:
-
-```ts
-item: T;
-```
-
-becomes:
-
-```ts
-item: string;
-```
-
-And:
-
-```ts
-constructor(item: T)
-```
-
-becomes:
-
-```ts
-constructor(item: string)
-```
-
-So I can think of it like this:
-
-```text
-Storage<T>
-    ↓
-Storage<string>
-    ↓
-T becomes string
-```
-
-Now:
-
-```ts
-console.log(nameStorage.item);
-```
-
-prints:
-
-```text
-Vivek
-```
-
----
-
-# 5. Using the Same Class With a Number
-
-I can use the exact same class for a number:
-
-```ts
-const ageStorage = new Storage<number>(20);
-```
-
-Now:
-
-```ts
-Storage<number>
 ```
 
 means:
 
 ```text
-T = number
+T = string
 ```
 
-So the class now works like:
+So TypeScript can treat the class like:
+
+```ts
+item: string;
+
+constructor(item: string)
+```
+
+The flow is:
 
 ```text
-item: number
+Storage<T>
+   ↓
+Storage<string>
+   ↓
+T becomes string
 ```
 
-I didn't create another class.
-
-I just used the same Generic Class with a different type.
+Now `nameStorage.item` is a string.
 
 ---
 
-# 6. Using the Same Class With Boolean
+# 5. Using the Same Class With Other Types
 
-I can also use the same class with a boolean:
+I can use the exact same class with a number:
+
+```ts
+const ageStorage = new Storage<number>(20);
+```
+
+Here:
+
+```text
+T = number
+```
+
+I can also use it with a boolean:
 
 ```ts
 const loginStorage = new Storage<boolean>(true);
 ```
 
-Now:
+Here:
 
 ```text
 T = boolean
@@ -306,81 +233,25 @@ T = boolean
 
 So I have:
 
-```ts
+```text
 Storage<string>
 Storage<number>
 Storage<boolean>
 ```
 
-All three are using the same class:
+But I only created one class:
 
 ```ts
 Storage<T>
 ```
 
-The only thing changing is the type of `T`.
+That's the main benefit of a Generic Class.
 
 ---
 
-# 7. The Main Idea
+# 6. Using `T` With Methods
 
-This is the most important part of this lesson.
-
-When I write:
-
-```ts
-const nameStorage = new Storage<string>("Vivek");
-```
-
-I am saying:
-
-```text
-T = string
-```
-
-When I write:
-
-```ts
-const ageStorage = new Storage<number>(20);
-```
-
-I am saying:
-
-```text
-T = number
-```
-
-When I write:
-
-```ts
-const loginStorage = new Storage<boolean>(true);
-```
-
-I am saying:
-
-```text
-T = boolean
-```
-
-So:
-
-```text
-Storage<T>
-    ↓
-    T is a placeholder
-    ↓
-I create an object
-    ↓
-I provide the actual type
-    ↓
-T becomes that type
-```
-
----
-
-# 8. Adding a Method
-
-Now I can add a method to get the stored value.
+I can also use `T` as the return type of a method.
 
 ```ts
 class Storage<T> {
@@ -403,15 +274,9 @@ Look at:
 getItem(): T
 ```
 
-The method also uses `T`.
+The method returns the same type that the class was created with.
 
-This means the method returns the same type that the class is working with.
-
----
-
-# 9. Calling the Method
-
-Now:
+For example:
 
 ```ts
 const nameStorage = new Storage<string>("Vivek");
@@ -419,65 +284,75 @@ const nameStorage = new Storage<string>("Vivek");
 const name = nameStorage.getItem();
 ```
 
-Because:
+Here:
 
-```ts
-nameStorage
-```
-
-is:
-
-```ts
-Storage<string>
-```
-
-TypeScript knows:
-
-```ts
-getItem(): string
+```text
+T = string
 ```
 
 So:
 
 ```ts
-name
+getItem(): T
 ```
 
-is a `string`.
+becomes:
+
+```ts
+getItem(): string
+```
 
 Similarly:
 
 ```ts
 const ageStorage = new Storage<number>(20);
-
-const age = ageStorage.getItem();
 ```
 
-Here:
+means:
 
 ```text
-Storage<number>
-      ↓
 T = number
-      ↓
-getItem(): number
 ```
 
-So `age` is a `number`.
+So `getItem()` returns a number.
 
 ---
 
-# 10. Generic Class With an Object
+# 7. Understanding the Type Flow
 
-So far, I used:
+Suppose I write:
 
-```text
-string
-number
-boolean
+```ts
+const nameStorage = new Storage<string>("Vivek");
+
+const name = nameStorage.getItem();
 ```
 
-But `T` can also represent an object type.
+The complete flow is:
+
+```text
+Storage<T>
+    ↓
+Storage<string>
+    ↓
+T = string
+    ↓
+item: string
+    ↓
+getItem(): string
+    ↓
+name: string
+```
+
+This is why TypeScript knows the exact type of `name`.
+
+---
+
+# 8. Generic Class With an Object
+
+`T` does not have to be a primitive type.
+
+It can also represent an object type.
 
 For example:
 
@@ -499,23 +374,17 @@ const userStorage = new Storage<User>({
 
 Here:
 
-```ts
-Storage<User>
-```
-
-means:
-
 ```text
 T = User
 ```
 
-So inside the class:
+So:
 
 ```ts
 item: T;
 ```
 
-becomes:
+effectively becomes:
 
 ```ts
 item: User;
@@ -527,72 +396,51 @@ And:
 getItem(): T
 ```
 
-becomes:
+effectively becomes:
 
 ```ts
-getItem(): User
+getItem(): User;
 ```
 
----
+Now TypeScript knows that the returned value has:
 
-# 11. Accessing the User
+```ts
+name
+age
+```
 
-Now I can get the stored user:
+So I can write:
 
 ```ts
 const user = userStorage.getItem();
-```
 
-TypeScript knows that `user` is a `User`.
-
-So I can access:
-
-```ts
 console.log(user.name);
 console.log(user.age);
 ```
 
-TypeScript understands:
-
-```text
-user.name
-    ↓
-string
-
-user.age
-    ↓
-number
-```
-
-This is where Generic Classes become really useful.
-
-The class is reusable, but TypeScript still remembers the exact type.
-
 ---
 
-# 12. Type Safety
+# 9. Type Safety
 
-Suppose I have:
+Generic Classes also give me type safety.
+
+Suppose:
 
 ```ts
 const nameStorage = new Storage<string>("Vivek");
 ```
 
-Then:
+This is valid:
 
 ```ts
 nameStorage.item = "Rahul";
 ```
 
-is valid.
-
-But:
+But this is not:
 
 ```ts
-nameStorage.item = 20;
+// nameStorage.item = 20;
 ```
-
-will give a TypeScript error.
 
 Why?
 
@@ -600,23 +448,21 @@ Because:
 
 ```text
 nameStorage
-     ↓
+    ↓
 Storage<string>
-     ↓
+    ↓
 T = string
-     ↓
+    ↓
 item must be string
 ```
 
 So TypeScript prevents me from putting a number into a string storage.
 
-This is the main benefit of using Generics.
-
 ---
 
-# 13. Generic Class vs `any`
+# 10. Generic Class vs `any`
 
-I could avoid the error by using `any`:
+I could use `any` instead:
 
 ```ts
 class Storage {
@@ -629,9 +475,9 @@ class Storage {
 }
 ```
 
-But now TypeScript does not know what type the value should be.
+But now TypeScript loses the useful type information.
 
-I could do:
+For example:
 
 ```ts
 const storage = new Storage("Vivek");
@@ -640,7 +486,7 @@ storage.item = 20;
 storage.item = true;
 ```
 
-Everything is allowed.
+TypeScript allows these because `item` is `any`.
 
 With Generics:
 
@@ -648,77 +494,65 @@ With Generics:
 const storage = new Storage<string>("Vivek");
 ```
 
-TypeScript knows:
+TypeScript remembers:
 
 ```text
 T = string
 ```
 
-and protects the value.
-
-So:
-
-```text
-Generic
-    ↓
-Reusable
-    +
-Type Safe
-```
+So the class remains reusable while still maintaining type safety.
 
 ---
 
-# 14. Type Inference
+# 11. Type Inference
 
-I don't always have to write the Generic type manually.
+I don't always need to explicitly write the Generic type.
 
-TypeScript can often figure it out from the value.
+TypeScript can often infer it from the value.
 
-For example:
+Instead of:
+
+```ts
+const nameStorage = new Storage<string>("Vivek");
+
+const ageStorage = new Storage<number>(20);
+```
+
+I can write:
 
 ```ts
 const nameStorage = new Storage("Vivek");
 
 const ageStorage = new Storage(20);
-
-const loginStorage = new Storage(true);
 ```
 
 TypeScript can understand:
 
 ```text
-"Vivek"
-   ↓
-T = string
+"Vivek" → T = string
 
-20
-   ↓
-T = number
-
-true
-   ↓
-T = boolean
+20 → T = number
 ```
 
-So this:
+So both approaches are possible.
+
+Explicit:
 
 ```ts
 new Storage<string>("Vivek");
 ```
 
-can often be written as:
+Inferred:
 
 ```ts
 new Storage("Vivek");
 ```
 
-TypeScript infers the type.
-
 ---
 
-# 15. Complete Example
+# 12. Complete Example
 
-Now I can put everything together:
+Now I can put the main concepts together:
 
 ```ts
 type User = {
@@ -749,20 +583,19 @@ const userStorage = new Storage<User>({
 });
 
 console.log(nameStorage.getItem());
-
 console.log(ageStorage.getItem());
 
 console.log(userStorage.getItem().name);
 console.log(userStorage.getItem().age);
 ```
 
-Now I have one class:
+One class:
 
-```ts
+```text
 Storage<T>
 ```
 
-working with:
+can work with:
 
 ```text
 string
@@ -772,9 +605,9 @@ User
 
 ---
 
-# 16. Execution Flow
+# 13. Execution Flow
 
-Let's understand this:
+Let's understand this line:
 
 ```ts
 const userStorage = new Storage<User>({
@@ -801,19 +634,13 @@ constructor accepts User
 getItem() returns User
 ```
 
-So after creating the object:
-
-```ts
-userStorage
-```
-
-TypeScript knows:
+So TypeScript knows:
 
 ```text
 userStorage → Storage<User>
 ```
 
-That's why TypeScript knows that:
+Therefore:
 
 ```ts
 userStorage.getItem().name
@@ -823,14 +650,92 @@ is valid.
 
 ---
 
-# 17. Mental Model
+# 14. Connection With the Previous Lesson
 
-I can remember Generic Classes like this:
+In the previous lesson, I learned Generic Functions:
+
+```ts
+function getValue<T>(value: T): T {
+    return value;
+}
+```
+
+Here:
+
+```text
+T belongs to the function
+```
+
+Now:
+
+```ts
+class Storage<T> {
+    item: T;
+}
+```
+
+Here:
+
+```text
+T belongs to the class
+```
+
+The Generic concept is still the same.
+
+The difference is where I am using it.
+
+```text
+Generic Function
+      ↓
+<T> belongs to the function
+
+Generic Class
+      ↓
+<T> belongs to the class
+```
+
+---
+
+# 15. Why This Is Useful for Backend Development
+
+Later in backend development, I will work with different types of data:
+
+```text
+User
+Product
+Order
+API Response
+Database Data
+```
+
+The same reusable class structure can potentially work with all of them:
+
+```ts
+Storage<User>
+Storage<Product>
+Storage<Order>
+```
+
+I don't need to create a completely different class for every type.
+
+The main idea is:
+
+```text
+Reusable Code
+      +
+Type Information
+      +
+Type Safety
+```
+
+---
+
+# 16. Mental Model
+
+The easiest way for me to remember Generic Classes is:
 
 ```text
 class Storage<T>
-       ↓
-      <T>
        ↓
 Type Placeholder
        ↓
@@ -840,10 +745,14 @@ Give Actual Type
        ↓
 T becomes that type
        ↓
-Class uses that type everywhere
+That type flows through the class
+       ↓
+Properties + Constructor + Methods
+       ↓
+Stay type-safe
 ```
 
-Example:
+For example:
 
 ```text
 Storage<string>
@@ -867,115 +776,6 @@ Type safety maintained.
 
 ---
 
-# 18. Connection With Previous Lesson
-
-In the previous lesson, I learned:
-
-```ts
-function getValue<T>(value: T): T {
-    return value;
-}
-```
-
-Here `T` belonged to the function.
-
-Now:
-
-```ts
-class Storage<T> {
-    item: T;
-}
-```
-
-Here `T` belongs to the class.
-
-The basic Generic idea has not changed.
-
-Only where I am using it has changed.
-
-```text
-Generic Function
-       ↓
-<T> belongs to the function
-
-Generic Class
-       ↓
-<T> belongs to the class
-```
-
----
-
-# 19. Why This Matters for Backend Development
-
-Later, when I build backend applications, I will work with different types of data.
-
-For example:
-
-```text
-User
-Product
-Order
-```
-
-The same Generic Class can potentially be reused with all of them.
-
-For example:
-
-```ts
-Storage<User>
-Storage<Product>
-Storage<Order>
-```
-
-I don't need to create a completely different class just because the data type changed.
-
-The main goal of Generics is:
-
-```text
-Write reusable code
-without losing type safety
-```
-
----
-
-# Common Mistakes
-
-## 1. Thinking `T` is a real type
-
-`T` is just a placeholder.
-
-```ts
-class Storage<T>
-```
-
-does not mean `T` is always a string.
-
-The actual type is decided when I use the class.
-
----
-
-## 2. Thinking Every Object Has the Same `T`
-
-These are different:
-
-```ts
-Storage<string>
-Storage<number>
-Storage<User>
-```
-
-Each object can have a different `T`.
-
----
-
-## 3. Using `any` Instead of Generics
-
-`any` removes most of the type protection.
-
-Generics let me keep the code reusable while TypeScript still knows the actual type.
-
----
-
 # Self-Test
 
 Before moving to the next lesson, I should be able to answer:
@@ -985,11 +785,12 @@ Before moving to the next lesson, I should be able to answer:
 3. When does `T` get its actual type?
 4. What does `Storage<string>` mean?
 5. What does `Storage<User>` mean?
-6. How can a class property use `T`?
-7. How can a class method use `T`?
-8. Why does `nameStorage.item = 20` give an error when `T = string`?
-9. Can TypeScript infer the Generic type automatically?
-10. Why are Generic Classes useful?
+6. How does `T` work with a class property?
+7. How does `T` work with a constructor?
+8. How does `T` work with a method?
+9. Why does `nameStorage.item = 20` give an error when `T = string`?
+10. How can TypeScript infer `T` automatically?
+11. Why is a Generic Class better than using `any` here?
 
 ---
 
@@ -1014,7 +815,7 @@ class Storage<T> {
 }
 ```
 
-Then I can use the same class with different types:
+Then I can use it with different types:
 
 ```ts
 const nameStorage = new Storage<string>("Vivek");
@@ -1027,7 +828,7 @@ const userStorage = new Storage<User>({
 });
 ```
 
-The main thing I need to remember is:
+The main thing I need to remember:
 
 ```text
 <T>
