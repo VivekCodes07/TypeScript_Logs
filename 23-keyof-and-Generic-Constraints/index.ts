@@ -150,7 +150,7 @@ K = key type
 */
 
 function getProperty<T, K>(object: T, key: K) {
-   // return object[key];
+    // return object[key];
 }
 
 
@@ -194,10 +194,7 @@ K = one key
 K extends keyof T = K must be a valid key of T
 */
 
-function getPropertySafe<T, K extends keyof T>(
-    object: T,
-    key: K
-) {
+function getPropertySafe<T, K extends keyof T>(object: T, key: K) {
     return object[key];
 }
 
@@ -307,15 +304,7 @@ K2 = second key
 Both K1 and K2 should be valid keys of T.
 */
 
-function getTwoProperties<
-    T,
-    K1 extends keyof T,
-    K2 extends keyof T
->(
-    object: T,
-    key1: K1,
-    key2: K2
-) {
+function getTwoProperties<T, K1 extends keyof T, K2 extends keyof T>(object: T, key1: K1, key2: K2) {
     return {
         first: object[key1],
         second: object[key2]
@@ -421,10 +410,7 @@ T[K]
 to say what type the selected property has.
 */
 
-function getPropertyWithType<T, K extends keyof T>(
-    object: T,
-    key: K
-): T[K] {
+function getPropertyWithType<T, K extends keyof T>(object: T, key: K): T[K] {
     return object[key];
 }
 
